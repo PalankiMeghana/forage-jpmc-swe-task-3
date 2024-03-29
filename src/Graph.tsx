@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table } from '@finos/perspective';
+import { Table,TableData } from '@finos/perspective';
 import { ServerRespond } from './DataStreamer';
 import { DataManipulator } from './DataManipulator';
 import './Graph.css';
@@ -40,26 +40,27 @@ class Graph extends Component<IProps, {}> {
       elem.load(this.table);
       elem.setAttribute('view', 'y_line');
       elem.setAttribute('row-pivots', '["timestamp"]');
-      elem.setAttribute('columns', '["ratio","lower_bound","upper_bound","trigger_alert"]');
+      elem.setAttribute('columns', '["ratio", "lower_bound", "upper_bound", "trigger_alert"]');
       elem.setAttribute('aggregates', JSON.stringify({
-        price_abc:'avg',
-        price_def:'avg',
-        ratio:'avg',
-        upper_bound:'avg',
-        lower_bound:'avg',
-        trigger_alert:'avg',
-        timestamp: 'distinct count',
+          price_abc: 'avg',
+          price_def: 'avg',
+          ratio: 'avg',
+          timestamp: 'distinct count',
+          upper_bound: 'avg',
+          lower_bound: 'avg',
+          trigger_alert: 'avg'
       }));
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.table) {
-      this.table.update([
-        DataManipulator.generateRow(this.props.data),
-        ]as unknown as TableData);
-    }
   }
 }
+
+componentDidUpdate() {
+  if (this.table) {
+      this.table.update([
+          DataManipulator.generateRow(this.props.data),
+      ] as unknown as TableData);
+  }
+}
+}
+
 
 export default Graph;
